@@ -1,0 +1,34 @@
+{
+    "HomePage":{
+      "title":"Hello world!",
+      "about": "Go to the about page"
+    },
+    "Navbar":{
+        "Home":"Home",
+        "Cars": "Car",
+        "About": "About",
+        "WhyUs":"Home",
+        "Testimonials": "Testimonial",
+        "Contact": "Contact"
+    },
+    "Hero": {
+      "title1": "Explore the",
+      "title2": "Finest Offers",
+      "title3": "in All of France",
+      "subtitle": "Find your ideal car for any adventure with our diverse range of affordable and dependable used car"
+    },
+    "Footer":{
+      "Working_Hours":"Working Hours",
+      "Mon-Fri":"Mon-Fri",
+      "Mon-Fri_Time":"09:00AM - 09:00PM",
+      "Sat":"Sat",
+      "Sat_Time":"09:00AM - 07:00PM",
+      "Sun":"Sun",
+      "Sun_Time":"Closed",
+
+      "Newsletter":"Newsletter",
+      "Newsletter_text": "Newsletter",
+      "Your_email": "Your Email",
+      "Submit": "Submit"
+    }
+}

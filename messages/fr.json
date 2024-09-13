@@ -1,0 +1,34 @@
+{
+    "HomePage":{
+      "title":"Bonjour le monde!",
+      "about": "FR FR Go to the about page FR FR"
+    },
+    "Navbar":{
+        "Home":"Accueil",
+        "Cars": "Voitures",
+        "About": "À propos de nous",
+        "WhyUs":"Pourquoi nous",
+        "Testimonials": "Témoignage",
+        "Contact": "Contactez-nous"
+    },
+    "Hero": {
+      "title1": "Découvrez le",
+      "title2": "Meilleures Offres",
+      "title3": "de toute la France",
+      "subtitle": "Trouvez votre voiture idéale pour toute aventure avec notre gamme diversifiée de voitures d'occasion abordables et fiables."
+    },
+    "Footer":{
+      "Working_Hours":"Heures de travail",
+      "Mon-Fri":"Lun-Ven",
+      "Mon-Fri_Time":"09h00 - 21h00",
+      "Sat":"Samedi",
+      "Sat_Time":"09h00 - 19h00",
+      "Sun":"Dimanche",
+      "Sun_Time":"Fermé",
+
+      "Newsletter":"Bulletin",
+      "Newsletter_text": "Newsletter",
+      "Your_email": "Votre e-mail",
+      "Submit": "Envoyer"
+    }
+}
