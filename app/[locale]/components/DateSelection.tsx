@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 
 // headless ui
-import { Menu } from '@headlessui/react';
+import { Menu, MenuButton, MenuItems } from '@headlessui/react';
 
 // icons
 import { FaCalendarAlt } from 'react-icons/fa';
@@ -30,7 +30,7 @@ export default function DateSelection() {
     <Menu as='div' className='w-full h-full flex xl:flex-row'>
       <div className='relative flex-1'>
         {/* btn */}
-        <Menu.Button className='dropdown-btn w-full h-full flex flex-col justify-center items-center xl:items-start xl:pl-8'>
+        <MenuButton className='dropdown-btn w-full h-full flex flex-col justify-center items-center xl:items-start xl:pl-8'>
           <div className='flex flex-col xl:flex-row items-center xl:gap-x-2 gap-y-2 xl:gap-y-0'>
             <FaCalendarAlt className='text-accent' />
             <div className='text-[15px] uppercase font-bold'>Select Date</div>
@@ -48,10 +48,10 @@ export default function DateSelection() {
               )}
             </div>
           </div>
-        </Menu.Button>
+        </MenuButton>
 
         {/* menu */}
-        <Menu.Items className='drodown-menu shadow-lg absolute -top-96 xl:top-[90px] left-1/2 xl:left-0 z-50 transform -translate-x-1/2 xl:-translate-x-0 rounded-[10px] overflow-hidden'>
+        <MenuItems className='drodown-menu shadow-lg absolute -top-96 xl:top-[90px] left-1/2 xl:left-0 z-50 transform -translate-x-1/2 xl:-translate-x-0 rounded-[10px] overflow-hidden'>
           <DateRange
             onChange={(item) => setDate([item.selection])}
             editableDateInputs={true}
@@ -60,7 +60,7 @@ export default function DateSelection() {
             rangeColors={['#ed1d24']}
             minDate={addDays(new Date(), 0)}
           />
-        </Menu.Items>
+        </MenuItems>
       </div>
     </Menu>
   );
