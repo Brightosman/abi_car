@@ -22,13 +22,8 @@ import { motion } from 'framer-motion';
 // variants
 import { fadeIn } from './variants';
 
-// Defining types for useInView hook
-interface InViewProps {
-  threshold: number;
-}
-
 const About: React.FC = () => {
-  const [ref, inView] = useInView<HTMLElement>({
+  const [ref, inView] = useInView({
     threshold: 0.5,
   });
 
