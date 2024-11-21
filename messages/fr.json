@@ -18,6 +18,12 @@
       "subtitle": "Trouvez votre voiture idéale pour toute aventure avec notre gamme diversifiée de voitures d'occasion abordables et fiables."
     },
     "Footer":{
+      "Company" : "Entreprise",
+      "Evreux" : "Évreux",
+      "Career": "Rejoignez-nous",
+      "Blog" : "Blog",
+
+
       "Working_Hours":"Heures de travail",
       "Mon-Fri":"Lun-Ven",
       "Mon-Fri_Time":"09h00 - 21h00",
