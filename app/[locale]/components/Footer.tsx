@@ -36,7 +36,7 @@ const Footer: React.FC = () => {
           <div className='flex flex-col flex-1 gap-y-8'>
             {/* logo */}
             <Link to={'home'} smooth={true} spy={true} className='cursor-pointer'>
-              <Image src={'/logo.svg'} width={50} height={50} alt='Logo' />
+              <Image src={'/logo.png'} width={50} height={50} alt='Logo' />
             </Link>
             {/* text */}
             <div className='text-secondary'>
@@ -47,7 +47,7 @@ const Footer: React.FC = () => {
               {/* phone */}
               <div className='flex items-center gap-x-[10px]'>
                 <FaPhone />
-                <div className='font-medium'>+33 (0)7 51 15 65 94</div>
+                <div className='font-medium'>+ 33 (0) 6 52 69 15 27</div>
               </div>
               {/* email */}
               <div className='flex items-center gap-x-[10px]'>
@@ -59,23 +59,18 @@ const Footer: React.FC = () => {
           {/* links */}
           <div className='flex-1 flex flex-col xl:items-center'>
             <div>
-              <h3 className='h3 font-bold mb-8'>Company</h3>
+              <h3 className='h3 font-bold mb-8'>{t('Company')}</h3>
               <ul className='flex flex-col gap-y-4 font-semibold'>
                 <li>
-                  <a href='#'>New York</a>
+                  <a href='#'>{t('Evreux')}</a>
                 </li>
                 <li>
-                  <a href='#'>Careers</a>
+                  <a href='#'>{t('Career')}</a>
                 </li>
                 <li>
-                  <a href='#'>Mobile</a>
+                  <a href='#'>{t('Blog')}</a>
                 </li>
-                <li>
-                  <a href='#'>Blog</a>
-                </li>
-                <li>
-                  <a href='#'>How we work</a>
-                </li>
+   
               </ul>
             </div>
           </div>

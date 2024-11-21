@@ -18,6 +18,13 @@
       "subtitle": "Find your ideal car for any adventure with our diverse range of affordable and dependable used car"
     },
     "Footer":{
+
+      "Company" : "Company",
+      "Evreux" : "Evreux",
+      "Career": "Career",
+      "Blog" : "Blog",
+
+
       "Working_Hours":"Working Hours",
       "Mon-Fri":"Mon-Fri",
       "Mon-Fri_Time":"09:00AM - 09:00PM",

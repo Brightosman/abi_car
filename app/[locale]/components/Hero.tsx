@@ -57,23 +57,23 @@ export default function Hero() {
               className='flex gap-x-3 justify-center xl:justify-start'
             >
               {/* btn appstore */}
-              <button className='btn-cta'>
+              {/* <button className='btn-cta'>
                 <Image
                   src={'/icons/buttons/app-store.svg'}
                   width={132}
                   height={36}
                   alt='App Store'
                 />
-              </button>
+              </button> */}
               {/* btn google */}
-              <button className='btn-cta'>
+              {/* <button className='btn-cta'>
                 <Image
                   src={'/icons/buttons/google-play.svg'}
                   width={132}
                   height={36}
                   alt='Google Play'
                 />
-              </button>
+              </button> */}
             </motion.div>
           </div>
           {/* img car */}
