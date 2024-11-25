@@ -40,19 +40,21 @@ const Footer: React.FC = () => {
             </Link>
             {/* text */}
             <div className='text-secondary'>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+              27 Rue de 4 saisons
+              <br></br>
+              <span>Angerville La Compagne</span>
             </div>
             {/* phone & email */}
             <div className='flex flex-col gap-y-4 font-semibold'>
               {/* phone */}
               <div className='flex items-center gap-x-[10px]'>
                 <FaPhone />
-                <div className='font-medium'>+ 33 (0) 6 52 69 15 27</div>
+                <div className='font-medium'>+ 33 (0) 6 79 69 56 71</div>
               </div>
               {/* email */}
               <div className='flex items-center gap-x-[10px]'>
                 <FaEnvelope />
-                <div className='font-medium'>briile_motors@baba9ja.com</div>
+                <div className='font-medium'>carsivo@hotmail.com</div>
               </div>
             </div>
           </div>
@@ -96,7 +98,7 @@ const Footer: React.FC = () => {
           <div className='flex-1'>
             <h3 className='h3 font-bold mb-8'>{t('Newsletter')}</h3>
             <div className='mb-9 text-secondary'>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              {t('Newsletter_text')}
             </div>
             {/* form */}
             <form className='flex gap-x-2 h-14'>

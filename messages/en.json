@@ -34,8 +34,15 @@
       "Sun_Time":"Closed",
 
       "Newsletter":"Newsletter",
-      "Newsletter_text": "Newsletter",
+      "Newsletter_text": "Subscribe to our monthly newsletter to receive our catalog with our best prices monthly",
       "Your_email": "Your Email",
       "Submit": "Submit"
+    },
+    "promotionBar":{
+      "text1": "Carsivo will be",
+      "text2": "launching",
+      "text3": "WEBSITE",
+      "text4": "soon,  get",
+      "text5": "50% off"
     }
 }
