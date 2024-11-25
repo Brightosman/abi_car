@@ -23,3 +23,15 @@ model Car {
   imageUrl  String?
   createdAt DateTime @default(now())
 }
+
+// Enums
+enum UserRole {
+  ADMIN
+  USER
+}
+
+enum TransactionStatus {
+  PENDING
+  COMPLETED
+  CANCELED
+}

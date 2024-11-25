@@ -34,8 +34,10 @@
 
 
 import React from 'react';
+import { useTranslations } from 'next-intl';
 
 export default function PromotionBar() {
+  const t = useTranslations('promotionBar');
   return (
     <div className="fixed inset-x-0 top-0 z-50 bg-teal-600">
       <div className="mx-auto max-w-7xl py-3 px-4 sm:px-6 lg:px-8">
@@ -57,8 +59,8 @@ export default function PromotionBar() {
               />
             </svg>
             <p className="ml-3 text-sm font-medium text-white">
-              To celebrate our <span className="font-semibold">Big Version 3</span> release, use{' '}
-              <span className="font-black">VERSION3</span> code to get{' '}
+              Carsivo will be   <span className="font-semibold">launching </span> our {' '}
+              <span className="font-black">WEBSITE</span> soon,  get{' '}
               <span className="font-black">50% off</span>.
             </p>
           </div>
