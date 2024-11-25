@@ -13,6 +13,7 @@ import {
   SignedOut,
   UserButton
 } from '@clerk/nextjs'
+import PromotionBar from "./components/PromotionBar";
 
 
 
@@ -47,6 +48,7 @@ export default async function LocaleLayout({
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
           <NextIntlClientProvider messages={messages}>
+            {/* <PromotionBar /> */}
             <Navbar />
             {children}
             <Footer />
