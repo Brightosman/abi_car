@@ -8,6 +8,7 @@ import { BiMenuAltRight, BiX } from 'react-icons/bi';
 import { SearchContext } from '../context/search';
 import { useTranslations } from 'next-intl';
 import PromotionBar from './PromotionBar';
+import LocaleSwitcher from './LocaleSwitcher';
 
 export default function Navbar() {
   const t = useTranslations('Navbar');
@@ -107,34 +108,7 @@ export default function Navbar() {
           {/* User Actions */}
           <div className="flex items-center gap-4">
             {/* Language Toggle */}
-            <button
-              onClick={toggleLanguage}
-              className="flex items-center gap-2 text-gray-800 hover:text-teal-600 focus:outline-none"
-            >
-              {language === 'en' ? (
-                <>
-                  <Image
-                    src="/fr-flag.png"
-                    alt="French"
-                    width={24}
-                    height={16}
-                    className="rounded"
-                  />
-                  <span>Français</span>
-                </>
-              ) : (
-                <>
-                  <Image
-                    src="/en-flag.png"
-                    alt="English"
-                    width={24}
-                    height={16}
-                    className="rounded"
-                  />
-                  <span>English</span>
-                </>
-              )}
-            </button>
+            <LocaleSwitcher />
 
             <a
               href="#"

@@ -1,7 +1,7 @@
 export default function Copyright() {
   return (
     <div className='text-center py-10 border-t text-sm'>
-      Copyright &copy; Carsivo Motors 2024. All rights reserved.
+      Copyright &copy; Carsivo 2025. All rights reserved.
     </div>
   );
 }
