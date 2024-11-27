@@ -57,7 +57,7 @@ const About: React.FC = () => {
                 viewport={{ once: false, amount: 0.6 }}
                 className="h2"
               >
-                Car services simplified.
+                Buy and sell your cars in 30 minutes
               </motion.h2>
               <motion.p
                 variants={fadeIn('up', 0.6)}
@@ -96,11 +96,11 @@ const About: React.FC = () => {
                   <MdOutlineMapsHomeWork className="text-5xl text-accent mb-2" />
                   <div className="text-3xl font-black mb-2">
                     {inView ? (
-                      <CountUp start={0} end={135} duration={3} delay={1} />
+                      <CountUp start={0} end={13} duration={3} delay={1} />
                     ) : null}
                   </div>
                   <div className="uppercase text-[13px] font-semibold text-secondary">
-                    rental <br /> outlets
+                    Show <br /> Rooms
                   </div>
                 </div>
                 {/* repair points */}
