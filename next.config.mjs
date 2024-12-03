@@ -8,6 +8,12 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
+        hostname: 'rdetnsqoqldakdjkaatr.supabase.co',
+        port: '',
+        pathname: '/storage/v1/object/public/listingImages/**',
+      },
+      {
+        protocol: 'https',
         hostname: 'img.clerk.com',
         pathname: '/**', // Match all paths under the domain
       },
