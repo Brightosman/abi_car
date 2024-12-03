@@ -1,7 +1,7 @@
 "use server"
 
 import {z} from"zod"
-import prisma from "./lib/db"
+import {prisma} from "./lib/db"
 // import { type CategoryTypes } from "@prisma/client"
 import { redirect } from "next/navigation"
 
