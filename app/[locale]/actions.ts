@@ -28,3 +28,4 @@ const listingSchema = z.object({
         .string()
         .min(1, { message: "Please upload a zip file of your Product"}),
 })
+

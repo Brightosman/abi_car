@@ -30,15 +30,15 @@ const config: Config = {
   	extend: {
   		colors: {
   			primary: {
-  				DEFAULT: 'hsl(var(--primary))',
+  				DEFAULT: '#101828',
   				foreground: 'hsl(var(--primary-foreground))'
   			},
   			secondary: {
-  				DEFAULT: 'hsl(var(--secondary))',
+  				DEFAULT: '#667085',
   				foreground: 'hsl(var(--secondary-foreground))'
   			},
   			accent: {
-  				DEFAULT: 'hsl(var(--accent))',
+  				DEFAULT: '#ed1d24',
   				hover: '#dd242a',
   				foreground: 'hsl(var(--accent-foreground))'
   			},
