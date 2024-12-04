@@ -39,7 +39,7 @@ export async function AddMake(prevState: any, formData: FormData){
         return state;
     }
 
-    await prisma.make.create({
+    await prisma.Make.create({
         data: {
             title: validateFields.data.title,
             logoUrl: validateFields.data.logoUrl,
