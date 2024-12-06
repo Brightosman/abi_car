@@ -7,7 +7,7 @@ import { CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from 
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
-import {SubmitButton} from "../../components/SubmitButtons";
+import {SubmitButton} from "../SubmitButtons";
 
 import { UploadDropzone } from "../../lib/uploadthing"
 
@@ -17,7 +17,7 @@ export default function AddMakeForm() {
 
     const initalState : State= {message: "", status: undefined}
     const [state, formAction] = useFormState(AddMake, initalState)
-    const [logoUrl, setLogoUrl] = useState<null | string[]>(null);
+    const [logoUrl, setLogoUrl] = useState<null | string>(null);
 
      useEffect(() =>{
         if(state.status === "success"){
@@ -52,13 +52,16 @@ export default function AddMakeForm() {
                 
 
                 <div className="flex flex-col gap-y-2">
-                <input type="hidden" name="logoUrl" value={JSON.stringify(logoUrl)} />
-                <Label>Make Logo</Label>
+                {/* <input type="hidden" name="logoUrl" value={JSON.stringify(logoUrl)} /> */}
+                <label htmlFor="logoUrl" className="my-text-16 sm:mb-2 mb-1.5 inline-block">
+                    Logo
+                </label>
                 <UploadDropzone
-                    endpoint="logoUploader"
-                    onClientUploadComplete={(res) =>{ setLogoUrl(res.map((item) => item.url)); toast.success("Your images have been uploaded")}} 
+                    endpoint="imageUploader"
+                    onClientUploadComplete={(res) =>{ setLogoUrl(res[0].url); toast.success("Your images have been uploaded")}} 
                     onUploadError={(error: Error) => { toast.error("Something went wrong, try again")}} 
                 />
+                <input type="hidden" name="logoUrl" value={logoUrl ?? ""} />
                 {state?.errors?.["logoUrl"]?.[0] && (
                     <p className="text-destructive">{state?.errors?.["logoUrl"]?.[0]}</p>
                 )}

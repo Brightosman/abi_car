@@ -1,4 +1,4 @@
-import AddMakeForm from '@/app/[locale]/components/form/AddMake'
+import AddMakeForm from '@/app/[locale]/components/form/AddMakeForm'
 import React, { FormEvent, Fragment, useState } from 'react'
 
 export default function page() {
