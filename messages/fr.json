@@ -9,7 +9,12 @@
         "About": "À propos de nous",
         "WhyUs":"Pourquoi nous",
         "Testimonials": "Témoignage",
-        "Contact": "Contactez-nous"
+        "Contact": "Contactez-nous",
+
+        "SeeAllCars" : "Voir toutes les voitures",
+
+        "Login": "Se connecter",
+        "GetStarted": "Commencer"
     },
     "Hero": {
       "title1": "Découvrez le",

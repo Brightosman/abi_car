@@ -17,6 +17,11 @@ const nextConfig = {
         hostname: 'img.clerk.com',
         pathname: '/**', // Match all paths under the domain
       },
+      {
+        hostname: "utfs.io",
+        protocol: "https",
+        port: ""
+},
     ],
   },
 };

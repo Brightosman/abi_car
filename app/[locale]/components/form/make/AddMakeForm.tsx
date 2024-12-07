@@ -1,15 +1,15 @@
 "use client"
 import React, { FormEvent, Fragment, useEffect, useState } from 'react'
 import { useFormState } from 'react-dom';
-import { AddMake, State } from '../../(actions)/make';
+import { AddMake, State } from '../../../(actions)/make/make';
 
 import { CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
-import {SubmitButton} from "../SubmitButtons";
+import {SubmitButton} from "../../SubmitButtons";
 
-import { UploadDropzone } from "../../lib/uploadthing"
+import { UploadDropzone } from "../../../lib/uploadthing"
 
 import { toast } from 'react-toastify';
 

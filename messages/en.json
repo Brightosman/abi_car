@@ -7,9 +7,14 @@
         "Home":"Home",
         "Cars": "Car",
         "About": "About",
-        "WhyUs":"Home",
+        "WhyUs":"Why Us",
         "Testimonials": "Testimonial",
-        "Contact": "Contact"
+        "Contact": "Contact",
+
+        "SeeAllCars" : "See All Cars",
+
+        "Login": "Login",
+        "GetStarted": "Get Started"
     },
     "Hero": {
       "title1": "Explore the",
