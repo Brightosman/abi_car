@@ -26,8 +26,9 @@ export default function PromotionBar() {
             </svg>
             <p className="ml-3 text-sm font-medium text-white">
               Carsivo will be   <span className="font-semibold">launching </span> our {' '}
-              <span className="font-black">WEBSITE</span> 
-              {/* soon,  get{' '}
+              <span className="font-black">WEBSITE </span> 
+              soon,  
+              {/* get{' '}
               <span className="font-black">50% off</span>. */}
             </p>
           </div>

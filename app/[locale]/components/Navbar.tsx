@@ -142,7 +142,7 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="fixed inset-0 bg-white z-30 flex flex-col items-center justify-center gap-6">
+        <div className="fixed inset-0 bg-white z-30 flex flex-col items-center justify-center gap-6 p-6">
           {/* Mobile Navigation Links */}
           <nav className="flex flex-col items-center gap-4 font-bold text-lg">
             {navigationLinks.map(({ id, label }) => (
@@ -152,21 +152,42 @@ export default function Navbar() {
                 smooth
                 spy
                 className="cursor-pointer hover:text-teal-600 transition-colors"
-                onClick={() => setIsMobileMenuOpen(false)} // Close menu on link click
+                onClick={() => setIsMobileMenuOpen(false)}
               >
                 {label}
               </ScrollLink>
             ))}
           </nav>
 
-          {/* Call to Action */}
-          <Link
-            href="/cars"
-            className="btn btn-primary text-white bg-teal-600 hover:bg-teal-700 py-2 px-6 rounded-lg"
-            onClick={() => setIsMobileMenuOpen(false)} // Close menu on link click
-          >
-            {t("SeeAllCars")}
-          </Link>
+          {/* Locale Switcher */}
+          <LocaleSwitcher />
+
+          {/* Login/Signup Buttons */}
+          {!isSignedIn ? (
+            <div className="flex flex-col items-center gap-4">
+              <Link
+                href="/login"
+                className="text-gray-800 hover:bg-gray-50 font-medium rounded-lg text-sm px-6 py-2 border border-gray-300"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                {t("Login")}
+              </Link>
+              <Link
+                href="/signup"
+                className="text-white bg-teal-600 hover:bg-teal-700 font-medium rounded-lg text-sm px-6 py-2"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                {t("GetStarted")}
+              </Link>
+            </div>
+          ) : (
+            <button
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="btn btn-primary text-white bg-teal-600 hover:bg-teal-700 py-2 px-6 rounded-lg"
+            >
+              {t("MyAccount")}
+            </button>
+          )}
 
           {/* Close Menu Button */}
           <button

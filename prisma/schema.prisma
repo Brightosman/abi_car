@@ -32,11 +32,34 @@ model Car {
   makeId           Int?
 
   model            String
+  model_variant    String
   year             Int
+
+  mileage           Int
+  fuel              Fuel
+  transmission      Transmission
+  carShape          CarShapes
 
   price            Decimal  @db.Decimal(10, 2)
   smallDescription String
   description      Json
+
+  navSystem Boolean
+  seatHeating Boolean
+  cruiseControl Boolean
+  multiFunSteeringWheel Boolean
+  rainSensor Boolean
+  parkingAssistant Boolean
+  eCall Boolean
+  lightSensor Boolean
+  startStop Boolean
+  bluetooth Boolean
+  handsFree Boolean
+  trafficSignRec Boolean
+  esp Boolean
+  abs Boolean
+  ac Boolean
+  airbag Boolean
 
   imageUrl         String[]
 
@@ -69,3 +92,35 @@ enum TransactionStatus {
   COMPLETED
   CANCELED
 }
+
+enum CarShapes {
+  Station_Wagon
+  Limousine
+  Small_Car
+  Coupe
+  Convertible
+  SUV
+  Minibus
+  Van
+  Pick_UP
+}
+
+enum Transmission {
+  Manual
+  Semi_automatic
+  Automatic
+}
+
+enum WheelDriver {
+  front_WD
+  back_WD
+  All_WD
+}
+
+enum Fuel {
+  Petrol
+  Diesel
+  Electric
+  Hybrid
+}
+
