@@ -3,6 +3,8 @@ import { z } from "zod";
 import { prisma } from "../../lib/db";
 import { revalidatePath } from "next/cache";
 
+import { useUser } from '@clerk/nextjs'
+
 export type State = {
   status: "error" | "success" | undefined;
   errors?: {
@@ -11,19 +13,29 @@ export type State = {
   message?: string | null;
 };
 
-// Schema for car validation
+// Schema for car validateFields
 const carSchema = z.object({
   makeId: z.number().optional(),
   model: z.string().min(1, { message: "Model is required" }),
   model_variant: z.string().min(1, { message: "Model variant is required" }),
   year: z.number().min(1886, { message: "Year must be a valid year" }),
   mileage: z.number().min(0, { message: "Mileage must be a positive number" }),
-  fuel: z.string().min(1, { message: "Fuel type is required" }),
-  transmission: z.string().min(1, { message: "Transmission type is required" }),
-  carShape: z.string().min(1, { message: "Car shape is required" }),
+  fuel: z.enum(["Petrol", "Diesel", "Electric", "Hybrid"], { message: "Invalid fuel type" }),
+  transmission: z.enum(["Manual", "Semi_automatic", "Automatic"], { message: "Invalid transmission type" }),
+  carShape: z.enum([
+    "Station_Wagon",
+    "Limousine",
+    "Small_Car",
+    "Coupe",
+    "Convertible",
+    "SUV",
+    "Minibus",
+    "Van",
+    "Pick_UP",
+  ], { message: "Invalid car shape" }),
   price: z.number().min(0, { message: "Price must be a positive number" }),
   smallDescription: z.string().min(1, { message: "Small description is required" }),
-  description: z.object({}).optional(),
+  description: z.string({}).optional(),
   navSystem: z.boolean(),
   seatHeating: z.boolean(),
   cruiseControl: z.boolean(),
@@ -44,25 +56,115 @@ const carSchema = z.object({
   userId: z.string().optional(),
 });
 
-// Create Car Action
-export async function createCar(data: z.infer<typeof carSchema>): Promise<State> {
-  const validation = carSchema.safeParse(data);
 
-  if (!validation.success) {
-    return {
+// Create Car Action
+export async function createCar(prevState: any, formData : FormData) {
+  const {user} = useUser();
+  
+  console.log("formData", formData);
+
+  
+
+  const validateFields = carSchema.safeParse({
+    make: formData.get('make') as string | null,
+    model: formData.get('model'),
+    model_variant: formData.get('model_variant'),
+    year : parseFloat(formData.get('year') as string),
+    mileage: parseFloat(formData.get('mileage')as string),
+
+    fuel: formData.get('fuel'),
+    transmission: formData.get('transmission'),
+    carShape: formData.get('carShape'),
+
+    price: parseFloat(formData.get('price') as string),
+    smallDescription: formData.get('smallDescription'),
+    description: formData.get('description') as string,
+
+    navSystem: formData.get('navSystem') === 'off',
+    seatHeating: formData.get('seatHeating') === 'off',
+    cruiseControl: formData.get('cruiseControl') === 'off', 
+    multiFunSteeringWheel: formData.get('multiFunSteeringWheel') === 'off', 
+    rainSensor: formData.get('rainSensor') === 'off', 
+    parkingAssistant: formData.get('parkingAssistant') === 'off', 
+    eCall: formData.get('eCall') === 'off', 
+    lightSensor: formData.get('lightSensor') === 'off', 
+    startStop: formData.get('startStop') === 'off', 
+    bluetooth: formData.get('bluetooth') === 'off', 
+    handsFree: formData.get('handsFree') === 'off', 
+    trafficSignRec: formData.get('trafficSignRec') === 'off', 
+    esp: formData.get('esp') === 'off', 
+    abs: formData.get('abs') === 'off', 
+    ac: formData.get('ac') === 'off', 
+    airbag: formData.get('airbag') === 'off', 
+
+    imageUrl: JSON.parse(formData.get('imageUrl') as string),
+    userId: auth.userId,
+
+  });
+
+
+  if (!validateFields.success) {
+    const state: State = {
       status: "error",
-      errors: validation.error.formErrors.fieldErrors,
-    };
+      errors: validateFields.error.formErrors.fieldErrors,
+      message: "Oops, I think there is a mistake with your inputs.",
+    }
+    return state;
   }
 
   try {
-    await prisma.car.create({ data });
-    revalidatePath("/cars"); // Revalidate the cars listing page
-    return {
+    console.log("Authenticated user ID:", userId);
+
+    await prisma.car.create({ 
+      data: {
+        makeId: validateFields.data.makeId,
+        model: validateFields.data.model,
+        model_variant: validateFields.data.model_variant,
+        year: validateFields.data.year,
+        mileage: validateFields.data.mileage,
+
+        fuel: validateFields.data.fuel,
+        transmission: validateFields.data.transmission,
+        carShape: validateFields.data.carShape,
+
+        price: validateFields.data.price,
+        smallDescription: validateFields.data.smallDescription,
+        description: validateFields.data.description
+        ? JSON.parse(validateFields.data.description)
+        : undefined,
+
+        navSystem: validateFields.data.navSystem,
+        seatHeating: validateFields.data.seatHeating,
+        cruiseControl: validateFields.data.cruiseControl,
+        multiFunSteeringWheel: validateFields.data.multiFunSteeringWheel,
+        rainSensor: validateFields.data.rainSensor,
+        parkingAssistant: validateFields.data.parkingAssistant,
+        eCall: validateFields.data.eCall,
+        lightSensor: validateFields.data.lightSensor,
+        startStop: validateFields.data.startStop,
+        bluetooth: validateFields.data.bluetooth,
+        handsFree: validateFields.data.handsFree,
+        trafficSignRec: validateFields.data.trafficSignRec,
+        esp: validateFields.data.esp,
+        abs: validateFields.data.abs,
+        ac: validateFields.data.ac,
+        airbag: validateFields.data.airbag,
+
+        imageUrl: validateFields.data.imageUrl,
+        userId: validateFields.data.userId || null,
+      } 
+    });
+    // revalidatePath("/cars"); // Revalidate the cars listing page
+
+    const state: State = {
       status: "success",
       message: "Car created successfully",
     };
+
+    return state;
+
   } catch (error) {
+    console.error("Error creating car:", error);
     return {
       status: "error",
       message: "Failed to create car",
@@ -70,24 +172,25 @@ export async function createCar(data: z.infer<typeof carSchema>): Promise<State>
   }
 }
 
+
 // Update Car Action
 export async function updateCar(
   id: number,
   data: Partial<z.infer<typeof carSchema>>
 ): Promise<State> {
-  const validation = carSchema.partial().safeParse(data);
+  const validateFields = carSchema.partial().safeParse(data);
 
-  if (!validation.success) {
+  if (!validateFields.success) {
     return {
       status: "error",
-      errors: validation.error.formErrors.fieldErrors,
+      errors: validateFields.error.formErrors.fieldErrors,
     };
   }
 
   try {
     await prisma.car.update({
       where: { id },
-      data: validation.data,
+      data: validateFields.data,
     });
     revalidatePath(`/cars/${id}`); // Revalidate the specific car page
     return {
@@ -95,6 +198,7 @@ export async function updateCar(
       message: "Car updated successfully",
     };
   } catch (error) {
+    console.error("Error updating car:", error);
     return {
       status: "error",
       message: "Failed to update car",
@@ -112,6 +216,7 @@ export async function deleteCar(id: number): Promise<State> {
       message: "Car deleted successfully",
     };
   } catch (error) {
+    console.error("Error deleting car:", error);
     return {
       status: "error",
       message: "Failed to delete car",
@@ -134,6 +239,7 @@ export async function getCarById(id: number): Promise<State & { car?: any }> {
       car,
     };
   } catch (error) {
+    console.error("Error fetching car by ID:", error);
     return {
       status: "error",
       message: "Failed to fetch car",

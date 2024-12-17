@@ -35,8 +35,8 @@ export default function CreateCarForm() {
   useEffect(() => {
     const loadMakes = async () => {
       try {
-        const makes = await GetMake();
-        setMakes(makes);
+        const response = await GetMake();
+        setMakes(response);
       } catch (error) {
         toast.error("Failed to load car makes.");
       }
@@ -44,7 +44,7 @@ export default function CreateCarForm() {
     loadMakes();
   }, []);
 
-  // Display form submission status
+  // Handle form submission feedback
   useEffect(() => {
     if (state.status === "success") {
       toast.success(state.message || "Car created successfully!");
@@ -66,24 +66,27 @@ export default function CreateCarForm() {
         </CardHeader>
 
         <CardContent className="flex flex-col gap-y-6">
-          {/* Make */}
+          {/* Car Make */}
           <div>
             <Label htmlFor="make">Car Make</Label>
             <select
               id="make"
-              name="make"
+              name="makeId"
               required
+              defaultValue=""
               className="w-full p-2 border rounded-md"
             >
-              <option value="">Select a car make</option>
+              <option value="" disabled>
+                Select a car make
+              </option>
               {makes.map((make) => (
                 <option key={make.id} value={make.id}>
                   {make.title}
                 </option>
               ))}
             </select>
-            {state.errors?.make && (
-              <p className="text-red-500">{state.errors.make[0]}</p>
+            {state.errors?.makeId && (
+              <p className="text-red-500">{state.errors.makeId[0]}</p>
             )}
           </div>
 
@@ -111,7 +114,11 @@ export default function CreateCarForm() {
               name="model_variant"
               type="text"
               placeholder="Enter the model variant"
+              required
             />
+            {state.errors?.model_variant && (
+              <p className="text-red-500">{state.errors.model_variant[0]}</p>
+            )}
           </div>
 
           {/* Year */}
@@ -140,6 +147,9 @@ export default function CreateCarForm() {
               placeholder="Enter the mileage"
               min={0}
             />
+            {state.errors?.mileage && (
+              <p className="text-red-500">{state.errors.mileage[0]}</p>
+            )}
           </div>
 
           {/* Fuel Type */}
@@ -149,15 +159,21 @@ export default function CreateCarForm() {
               id="fuel"
               name="fuel"
               required
+              defaultValue=""
               className="w-full p-2 border rounded-md"
             >
-              <option value="">Select fuel type</option>
+              <option value="" disabled>
+                Select fuel type
+              </option>
               {["Petrol", "Diesel", "Electric", "Hybrid"].map((fuel) => (
                 <option key={fuel} value={fuel}>
                   {fuel}
                 </option>
               ))}
             </select>
+            {state.errors?.fuel && (
+              <p className="text-red-500">{state.errors.fuel[0]}</p>
+            )}
           </div>
 
           {/* Transmission */}
@@ -167,15 +183,21 @@ export default function CreateCarForm() {
               id="transmission"
               name="transmission"
               required
+              defaultValue=""
               className="w-full p-2 border rounded-md"
             >
-              <option value="">Select transmission</option>
-              {["Manual", "Semi_automatic", "Automatic"].map((transmission) => (
-                <option key={transmission} value={transmission}>
-                  {transmission}
+              <option value="" disabled>
+                Select transmission
+              </option>
+              {["Manual", "Semi_automatic", "Automatic"].map((trans) => (
+                <option key={trans} value={trans}>
+                  {trans.replace("_", " ")}
                 </option>
               ))}
             </select>
+            {state.errors?.transmission && (
+              <p className="text-red-500">{state.errors.transmission[0]}</p>
+            )}
           </div>
 
           {/* Car Shape */}
@@ -185,9 +207,12 @@ export default function CreateCarForm() {
               id="carShape"
               name="carShape"
               required
+              defaultValue=""
               className="w-full p-2 border rounded-md"
             >
-              <option value="">Select car shape</option>
+              <option value="" disabled>
+                Select car shape
+              </option>
               {[
                 "Station_Wagon",
                 "Limousine",
@@ -204,6 +229,9 @@ export default function CreateCarForm() {
                 </option>
               ))}
             </select>
+            {state.errors?.carShape && (
+              <p className="text-red-500">{state.errors.carShape[0]}</p>
+            )}
           </div>
 
           {/* Price */}
@@ -217,6 +245,39 @@ export default function CreateCarForm() {
               required
               min={0}
             />
+            {state.errors?.price && (
+              <p className="text-red-500">{state.errors.price[0]}</p>
+            )}
+          </div>
+
+          {/* Small Description */}
+          <div>
+            <Label htmlFor="smallDescription">Small Description</Label>
+            <Input
+              id="smallDescription"
+              name="smallDescription"
+              type="text"
+              placeholder="Enter a brief description"
+              required
+            />
+            {state.errors?.smallDescription && (
+              <p className="text-red-500">{state.errors.smallDescription[0]}</p>
+            )}
+          </div>
+
+          {/* Description */}
+          <div>
+            <Label htmlFor="description">Description</Label>
+            <textarea
+              id="description"
+              name="description"
+              placeholder="Enter a detailed description of the car"
+              rows={5}
+              className="w-full p-2 border rounded-md"
+            ></textarea>
+            {state.errors?.description && (
+              <p className="text-red-500">{state.errors.description[0]}</p>
+            )}
           </div>
 
           {/* Features */}
@@ -268,6 +329,9 @@ export default function CreateCarForm() {
                 toast.error("Failed to upload images. Please try again.");
               }}
             />
+            {state.errors?.imageUrl && (
+              <p className="text-red-500">{state.errors.imageUrl[0]}</p>
+            )}
             <input
               type="hidden"
               name="imageUrl"

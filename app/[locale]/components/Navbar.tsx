@@ -99,7 +99,7 @@ export default function Navbar() {
             {!isSignedIn ? (
               <>
                 <Link
-                  href="/login"
+                  href="/sign-in"
                   className="text-gray-800 hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2"
                 >
                   {t("Login")}

@@ -28,7 +28,7 @@ model User {
 model Car {
   id               Int      @id @default(autoincrement())
 
-  Make             Make?    @relation(fields: [makeId], references: [id])
+  make             Make?    @relation(fields: [makeId], references: [id])
   makeId           Int?
 
   model            String
@@ -41,8 +41,8 @@ model Car {
   carShape          CarShapes
 
   price            Decimal  @db.Decimal(10, 2)
-  smallDescription String
-  description      Json
+  smallDescription String ?
+  description      Json ?
 
   navSystem Boolean
   seatHeating Boolean
