@@ -176,117 +176,76 @@ export async function createCar(prevState: any, formData : FormData) {
 }
 
 
-// export const createCar = async (formData: FormData): Promise<State> => {
-//   try {
-//     const rawCarData = Object.fromEntries(formData.entries());
+// // Update Car Action
+// export async function updateCar(
+//   id: number,
+//   data: Partial<z.infer<typeof carSchema>>
+// ): Promise<State> {
+//   const validateFields = carSchema.partial().safeParse(data);
 
-//     // Convert boolean string values ("true"/"false") to actual booleans
-//     const carData = {
-//       ...rawCarData,
-//       navSystem: rawCarData.navSystem === "true",
-//       seatHeating: rawCarData.seatHeating === "true",
-//       cruiseControl: rawCarData.cruiseControl === "true",
-//       multiFunSteeringWheel: rawCarData.multiFunSteeringWheel === "true",
-//       rainSensor: rawCarData.rainSensor === "true",
-//       parkingAssistant: rawCarData.parkingAssistant === "true",
-//       eCall: rawCarData.eCall === "true",
-//       lightSensor: rawCarData.lightSensor === "true",
-//       startStop: rawCarData.startStop === "true",
-//       bluetooth: rawCarData.bluetooth === "true",
-//       handsFree: rawCarData.handsFree === "true",
-//       trafficSignRec: rawCarData.trafficSignRec === "true",
-//       esp: rawCarData.esp === "true",
-//       abs: rawCarData.abs === "true",
-//       ac: rawCarData.ac === "true",
-//       airbag: rawCarData.airbag === "true",
-//     };
-
-//     // Validate data
-//     const parsedData = carSchema.parse(carData);
-
-//     // Save to database
-//     await prisma.car.create({ data: parsedData });
-
-//     return { status: "success", message: "Car created successfully!" };
-//   } catch (error: any) {
+//   if (!validateFields.success) {
 //     return {
 //       status: "error",
-//       errors: error.errors || {},
-//       message: error.message || "An error occurred",
+//       errors: validateFields.error.formErrors.fieldErrors,
 //     };
 //   }
-// };
 
-// Update Car Action
-export async function updateCar(
-  id: number,
-  data: Partial<z.infer<typeof carSchema>>
-): Promise<State> {
-  const validateFields = carSchema.partial().safeParse(data);
+//   try {
+//     await prisma.car.update({
+//       where: { id },
+//       data: validateFields.data,
+//     });
+//     revalidatePath(`/cars/${id}`); // Revalidate the specific car page
+//     return {
+//       status: "success",
+//       message: "Car updated successfully",
+//     };
+//   } catch (error) {
+//     console.error("Error updating car:", error);
+//     return {
+//       status: "error",
+//       message: "Failed to update car",
+//     };
+//   }
+// }
 
-  if (!validateFields.success) {
-    return {
-      status: "error",
-      errors: validateFields.error.formErrors.fieldErrors,
-    };
-  }
+// // Delete Car Action
+// export async function deleteCar(id: number): Promise<State> {
+//   try {
+//     await prisma.car.delete({ where: { id } });
+//     revalidatePath("/cars"); // Revalidate the cars listing page
+//     return {
+//       status: "success",
+//       message: "Car deleted successfully",
+//     };
+//   } catch (error) {
+//     console.error("Error deleting car:", error);
+//     return {
+//       status: "error",
+//       message: "Failed to delete car",
+//     };
+//   }
+// }
 
-  try {
-    await prisma.car.update({
-      where: { id },
-      data: validateFields.data,
-    });
-    revalidatePath(`/cars/${id}`); // Revalidate the specific car page
-    return {
-      status: "success",
-      message: "Car updated successfully",
-    };
-  } catch (error) {
-    console.error("Error updating car:", error);
-    return {
-      status: "error",
-      message: "Failed to update car",
-    };
-  }
-}
-
-// Delete Car Action
-export async function deleteCar(id: number): Promise<State> {
-  try {
-    await prisma.car.delete({ where: { id } });
-    revalidatePath("/cars"); // Revalidate the cars listing page
-    return {
-      status: "success",
-      message: "Car deleted successfully",
-    };
-  } catch (error) {
-    console.error("Error deleting car:", error);
-    return {
-      status: "error",
-      message: "Failed to delete car",
-    };
-  }
-}
-
-// Get Car By ID Action
-export async function getCarById(id: number): Promise<State & { car?: any }> {
-  try {
-    const car = await prisma.car.findUnique({ where: { id } });
-    if (!car) {
-      return {
-        status: "error",
-        message: "Car not found",
-      };
-    }
-    return {
-      status: "success",
-      car,
-    };
-  } catch (error) {
-    console.error("Error fetching car by ID:", error);
-    return {
-      status: "error",
-      message: "Failed to fetch car",
-    };
-  }
-}
+// // Get Car By ID Action
+// export async function getCarById(id: number): Promise<State & { car?: any }> {
+//   try {
+//     const car = await prisma.car.findUnique({ where: { id } });
+//     if (!car) {
+//       return {
+//         status: "error",
+//         message: "Car not found",
+//       };
+//     }
+//     return {
+//       status: "success",
+//       car,
+//     };
+//   } catch (error) {
+//     console.error("Error fetching car by ID:", error);
+//     return {
+//       status: "error",
+//       message: "Failed to fetch car",
+//     };
+//   }
+// }
