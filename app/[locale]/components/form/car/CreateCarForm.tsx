@@ -4,6 +4,8 @@ import React, { useEffect, useState } from "react";
 import { useFormState } from "react-dom";
 import { GetMake } from "@/app/[locale]/(actions)/make/make";
 import { createCar, State } from "../../../(actions)/car/car";
+import { JSONContent } from '@tiptap/react';
+import { TipTapEditor } from '../../Editor';
 
 import {
   CardContent,
@@ -14,10 +16,8 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-
 import { SubmitButton } from "../../SubmitButtons";
 import { UploadDropzone } from "../../../lib/uploadthing";
-
 import { toast } from "react-toastify";
 
 type Make = {
@@ -26,12 +26,22 @@ type Make = {
 };
 
 export default function CreateCarForm() {
-  const initialState: State = { message: "", status: undefined };
+  const initialState: State = { message: "Done", status: undefined };
   const [state, formAction] = useFormState(createCar, initialState);
+  const [json, setJson] = useState<null | JSONContent>(null);
   const [imageUrls, setImageUrls] = useState<string[]>([]);
   const [makes, setMakes] = useState<Make[]>([]);
 
-  // Load makes (brands) from the database
+  
+
+  useEffect(() => {
+    if (state.status === "success") {
+      toast.success(state.message || "Car created successfully!");
+    } else if (state.status === "error") {
+      toast.error(state.message || "Something went wrong.");
+    }
+  }, [state]);
+
   useEffect(() => {
     const loadMakes = async () => {
       try {
@@ -44,15 +54,6 @@ export default function CreateCarForm() {
     loadMakes();
   }, []);
 
-  // Handle form submission feedback
-  useEffect(() => {
-    if (state.status === "success") {
-      toast.success(state.message || "Car created successfully!");
-    } else if (state.status === "error") {
-      toast.error(state.message || "Something went wrong.");
-    }
-  }, [state]);
-
   return (
     <div className="bg-gray-100 p-8 rounded-lg shadow-lg max-w-4xl mx-auto">
       <h2 className="text-2xl font-semibold mb-6">Create Car Listing</h2>
@@ -61,17 +62,17 @@ export default function CreateCarForm() {
         <CardHeader>
           <CardTitle>List Your Car</CardTitle>
           <CardDescription>
-            Provide details about your car so that potential buyers can find it.
+            Provide details about your car so potential buyers can find it.
           </CardDescription>
         </CardHeader>
 
-        <CardContent className="flex flex-col gap-y-6">
+        <CardContent className="flex flex-col gap-y-10">
           {/* Car Make */}
           <div>
             <Label htmlFor="make">Car Make</Label>
             <select
               id="make"
-              name="makeId"
+              name="make"
               required
               defaultValue=""
               className="w-full p-2 border rounded-md"
@@ -90,230 +91,89 @@ export default function CreateCarForm() {
             )}
           </div>
 
-          {/* Model */}
-          <div>
-            <Label htmlFor="model">Car Model</Label>
-            <Input
-              id="model"
-              name="model"
-              type="text"
-              placeholder="Enter the car model"
-              required
-              minLength={2}
-            />
-            {state.errors?.model && (
-              <p className="text-red-500">{state.errors.model[0]}</p>
-            )}
-          </div>
+          {/* Other fields */}
+          {[
+            { id: "model", name: "model", placeholder: "Enter the car model", label: "Car Model", type: "text", required: true },
+            { id: "model_variant", name: "model_variant", placeholder: "Enter the model variant", label: "Model Variant", type: "text", required: true },
+            { id: "year", name: "year", placeholder: "Enter the year of manufacture", label: "Year", type: "number", min: 1886, required: true },
+            { id: "mileage", name: "mileage", placeholder: "Enter the mileage", label: "Mileage (km)", type: "number", min: 0 },
+            { id: "price", name: "price", placeholder: "Enter the price of the car", label: "Price", type: "number", min: 0, required: true },
+            { id: "smallDescription", name: "smallDescription", placeholder: "Enter a brief description", label: "Small Description", type: "text", required: true },
+          ].map(({ id, name, placeholder, label, type, required, min }) => (
+            <div key={id}>
+              <Label htmlFor={id}>{label}</Label>
+              <Input
+                id={id}
+                name={name}
+                type={type}
+                placeholder={placeholder}
+                required={required}
+                min={min}
+              />
+              {state.errors?.[name] && (
+                <p className="text-red-500">{state.errors[name][0]}</p>
+              )}
+            </div>
+          ))}
 
-          {/* Model Variant */}
-          <div>
-            <Label htmlFor="model_variant">Model Variant</Label>
-            <Input
-              id="model_variant"
-              name="model_variant"
-              type="text"
-              placeholder="Enter the model variant"
-              required
-            />
-            {state.errors?.model_variant && (
-              <p className="text-red-500">{state.errors.model_variant[0]}</p>
-            )}
-          </div>
-
-          {/* Year */}
-          <div>
-            <Label htmlFor="year">Year</Label>
-            <Input
-              id="year"
-              name="year"
-              type="number"
-              placeholder="Enter the year of manufacture"
-              required
-              min={1886}
-            />
-            {state.errors?.year && (
-              <p className="text-red-500">{state.errors.year[0]}</p>
-            )}
-          </div>
-
-          {/* Mileage */}
-          <div>
-            <Label htmlFor="mileage">Mileage (km)</Label>
-            <Input
-              id="mileage"
-              name="mileage"
-              type="number"
-              placeholder="Enter the mileage"
-              min={0}
-            />
-            {state.errors?.mileage && (
-              <p className="text-red-500">{state.errors.mileage[0]}</p>
-            )}
-          </div>
-
-          {/* Fuel Type */}
-          <div>
-            <Label htmlFor="fuel">Fuel Type</Label>
-            <select
-              id="fuel"
-              name="fuel"
-              required
-              defaultValue=""
-              className="w-full p-2 border rounded-md"
-            >
-              <option value="" disabled>
-                Select fuel type
-              </option>
-              {["Petrol", "Diesel", "Electric", "Hybrid"].map((fuel) => (
-                <option key={fuel} value={fuel}>
-                  {fuel}
+          {/* Dropdown fields */}
+          {[
+            { id: "fuel", name: "fuel", label: "Fuel Type", options: ["Petrol", "Diesel", "Electric", "Hybrid"], required: true },
+            { id: "transmission", name: "transmission", label: "Transmission", options: ["Manual", "Semi_automatic", "Automatic"], required: true },
+            { id: "carShape", name: "carShape", label: "Car Shape", options: ["Station_Wagon", "Limousine", "Small_Car", "Coupe", "Convertible", "SUV", "Minibus", "Van", "Pick_UP"], required: true },
+            { id: "wheelDrive", name: "wheelDrive", label: "Wheel Drive", options: ["front_WD", "back_WD", "All_WD"], required: true},
+          ].map(({ id, name, label, options, required }) => (
+            <div key={id}>
+              <Label htmlFor={id}>{label}</Label>
+              <select
+                id={id}
+                name={name}
+                required={required}
+                defaultValue=""
+                className="w-full p-2 border rounded-md"
+              >
+                <option value="" disabled>
+                  Select {label.toLowerCase()}
                 </option>
-              ))}
-            </select>
-            {state.errors?.fuel && (
-              <p className="text-red-500">{state.errors.fuel[0]}</p>
-            )}
-          </div>
+                {options.map((option) => (
+                  <option key={option} value={option}>
+                    {option.replace("_", " ")}
+                  </option>
+                ))}
+              </select>
+              {state.errors?.[name] && (
+                <p className="text-red-500">{state.errors[name][0]}</p>
+              )}
+            </div>
+          ))}
 
-          {/* Transmission */}
-          <div>
-            <Label htmlFor="transmission">Transmission</Label>
-            <select
-              id="transmission"
-              name="transmission"
-              required
-              defaultValue=""
-              className="w-full p-2 border rounded-md"
-            >
-              <option value="" disabled>
-                Select transmission
-              </option>
-              {["Manual", "Semi_automatic", "Automatic"].map((trans) => (
-                <option key={trans} value={trans}>
-                  {trans.replace("_", " ")}
-                </option>
-              ))}
-            </select>
-            {state.errors?.transmission && (
-              <p className="text-red-500">{state.errors.transmission[0]}</p>
-            )}
-          </div>
-
-          {/* Car Shape */}
-          <div>
-            <Label htmlFor="carShape">Car Shape</Label>
-            <select
-              id="carShape"
-              name="carShape"
-              required
-              defaultValue=""
-              className="w-full p-2 border rounded-md"
-            >
-              <option value="" disabled>
-                Select car shape
-              </option>
-              {[
-                "Station_Wagon",
-                "Limousine",
-                "Small_Car",
-                "Coupe",
-                "Convertible",
-                "SUV",
-                "Minibus",
-                "Van",
-                "Pick_UP",
-              ].map((shape) => (
-                <option key={shape} value={shape}>
-                  {shape.replace("_", " ")}
-                </option>
-              ))}
-            </select>
-            {state.errors?.carShape && (
-              <p className="text-red-500">{state.errors.carShape[0]}</p>
-            )}
-          </div>
-
-          {/* Price */}
-          <div>
-            <Label htmlFor="price">Price</Label>
-            <Input
-              id="price"
-              name="price"
-              type="number"
-              placeholder="Enter the price of the car"
-              required
-              min={0}
-            />
-            {state.errors?.price && (
-              <p className="text-red-500">{state.errors.price[0]}</p>
-            )}
-          </div>
-
-          {/* Small Description */}
-          <div>
-            <Label htmlFor="smallDescription">Small Description</Label>
-            <Input
-              id="smallDescription"
-              name="smallDescription"
-              type="text"
-              placeholder="Enter a brief description"
-              required
-            />
-            {state.errors?.smallDescription && (
-              <p className="text-red-500">{state.errors.smallDescription[0]}</p>
-            )}
-          </div>
-
-          {/* Description */}
-          <div>
-            <Label htmlFor="description">Description</Label>
-            <textarea
-              id="description"
-              name="description"
-              placeholder="Enter a detailed description of the car"
-              rows={5}
-              className="w-full p-2 border rounded-md"
-            ></textarea>
-            {state.errors?.description && (
-              <p className="text-red-500">{state.errors.description[0]}</p>
-            )}
-          </div>
+          {/* Textarea */}
+          {/* <div className="flex flex-col gap-y-2">
+              <input type="hidden" name="description" value={JSON.stringify(json)} />
+              <Label>Description</Label>
+              <TipTapEditor json={json} setJson={setJson} />
+              {state?.errors?.["description"]?.[0] && (
+                <p className="text-destructive">{state?.errors?.["description"]?.[0]}</p>
+              )}
+          </div> */}
 
           {/* Features */}
-          <div>
+          {/* <div>
             <Label>Car Features</Label>
             {[
-              "navSystem",
-              "seatHeating",
-              "cruiseControl",
-              "multiFunSteeringWheel",
-              "rainSensor",
-              "parkingAssistant",
-              "eCall",
-              "lightSensor",
-              "startStop",
-              "bluetooth",
-              "handsFree",
-              "trafficSignRec",
-              "esp",
-              "abs",
-              "ac",
-              "airbag",
+              "navSystem", "seatHeating", "cruiseControl", "multiFunSteeringWheel",
+              "rainSensor", "parkingAssistant", "eCall", "lightSensor", "startStop",
+              "bluetooth", "handsFree", "trafficSignRec", "esp", "abs", "ac", "airbag"
             ].map((feature) => (
-              <div key={feature}>
-                <input
-                  type="checkbox"
-                  id={feature}
-                  name={feature}
-                  value="true"
-                />
+              <div key={feature} className="flex items-center">
+                <input type="hidden" name={feature} value="false" />
+                <input type="checkbox" id={feature} name={feature} value="true" />
                 <Label htmlFor={feature} className="ml-2 capitalize">
                   {feature.replace(/([A-Z])/g, " $1")}
                 </Label>
               </div>
             ))}
-          </div>
+          </div> */}
 
           {/* Image Upload */}
           <div>
@@ -326,17 +186,10 @@ export default function CreateCarForm() {
                 toast.success("Images uploaded successfully.");
               }}
               onUploadError={() => {
-                toast.error("Failed to upload images. Please try again.");
-              }}
+                 toast.error("Failed to upload images. Please try again.");
+               }}
             />
-            {state.errors?.imageUrl && (
-              <p className="text-red-500">{state.errors.imageUrl[0]}</p>
-            )}
-            <input
-              type="hidden"
-              name="imageUrl"
-              value={JSON.stringify(imageUrls)}
-            />
+            <input type="hidden" name="imageUrl" value={JSON.stringify(imageUrls)} />
           </div>
         </CardContent>
 

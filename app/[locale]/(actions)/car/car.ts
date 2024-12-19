@@ -1,9 +1,12 @@
 "use server";
 import { z } from "zod";
 import { prisma } from "../../lib/db";
+import { type CarShapes, Transmission, Fuel  } from "@prisma/client"
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation"
 
-import { useUser } from '@clerk/nextjs'
+// import type { NextApiRequest, NextApiResponse } from 'next'
+// import { getAuth } from '@clerk/nextjs/server'
 
 export type State = {
   status: "error" | "success" | undefined;
@@ -15,7 +18,7 @@ export type State = {
 
 // Schema for car validateFields
 const carSchema = z.object({
-  makeId: z.number().optional(),
+  make: z.string().min(1, { message: "Make is required" }),
   model: z.string().min(1, { message: "Model is required" }),
   model_variant: z.string().min(1, { message: "Model variant is required" }),
   year: z.number().min(1886, { message: "Year must be a valid year" }),
@@ -33,40 +36,41 @@ const carSchema = z.object({
     "Van",
     "Pick_UP",
   ], { message: "Invalid car shape" }),
+  wheelDrive: z.enum(["front_WD", "back_WD", "All_WD"], { message: "Invalid wheel drive type" }),
   price: z.number().min(0, { message: "Price must be a positive number" }),
   smallDescription: z.string().min(1, { message: "Small description is required" }),
-  description: z.string({}).optional(),
-  navSystem: z.boolean(),
-  seatHeating: z.boolean(),
-  cruiseControl: z.boolean(),
-  multiFunSteeringWheel: z.boolean(),
-  rainSensor: z.boolean(),
-  parkingAssistant: z.boolean(),
-  eCall: z.boolean(),
-  lightSensor: z.boolean(),
-  startStop: z.boolean(),
-  bluetooth: z.boolean(),
-  handsFree: z.boolean(),
-  trafficSignRec: z.boolean(),
-  esp: z.boolean(),
-  abs: z.boolean(),
-  ac: z.boolean(),
-  airbag: z.boolean(),
+  // description: z.string({}).optional(),
+  // navSystem: z.boolean(),
+  // seatHeating: z.boolean(),
+  // cruiseControl: z.boolean(),
+  // multiFunSteeringWheel: z.boolean(),
+  // rainSensor: z.boolean(),
+  // parkingAssistant: z.boolean(),
+  // eCall: z.boolean(),
+  // lightSensor: z.boolean(),
+  // startStop: z.boolean(),
+  // bluetooth: z.boolean(),
+  // handsFree: z.boolean(),
+  // trafficSignRec: z.boolean(),
+  // esp: z.boolean(),
+  // abs: z.boolean(),
+  // ac: z.boolean(),
+  // airbag: z.boolean(),
   imageUrl: z.array(z.string().url({ message: "Invalid URL in imageUrl" })),
-  userId: z.string().optional(),
+  // userId: z.string().optional(),
 });
 
 
 // Create Car Action
 export async function createCar(prevState: any, formData : FormData) {
-  const {user} = useUser();
+  // const { userId }: { userId: string | null } = await auth()
   
-  console.log("formData", formData);
+  console.log("formData from action", formData);
 
   
 
   const validateFields = carSchema.safeParse({
-    make: formData.get('make') as string | null,
+    make: formData.get('make') as string,
     model: formData.get('model'),
     model_variant: formData.get('model_variant'),
     year : parseFloat(formData.get('year') as string),
@@ -75,30 +79,31 @@ export async function createCar(prevState: any, formData : FormData) {
     fuel: formData.get('fuel'),
     transmission: formData.get('transmission'),
     carShape: formData.get('carShape'),
+    wheelDrive: formData.get('wheelDrive'),
 
     price: parseFloat(formData.get('price') as string),
     smallDescription: formData.get('smallDescription'),
-    description: formData.get('description') as string,
+    // description: formData.get('description') as string,
 
-    navSystem: formData.get('navSystem') === 'off',
-    seatHeating: formData.get('seatHeating') === 'off',
-    cruiseControl: formData.get('cruiseControl') === 'off', 
-    multiFunSteeringWheel: formData.get('multiFunSteeringWheel') === 'off', 
-    rainSensor: formData.get('rainSensor') === 'off', 
-    parkingAssistant: formData.get('parkingAssistant') === 'off', 
-    eCall: formData.get('eCall') === 'off', 
-    lightSensor: formData.get('lightSensor') === 'off', 
-    startStop: formData.get('startStop') === 'off', 
-    bluetooth: formData.get('bluetooth') === 'off', 
-    handsFree: formData.get('handsFree') === 'off', 
-    trafficSignRec: formData.get('trafficSignRec') === 'off', 
-    esp: formData.get('esp') === 'off', 
-    abs: formData.get('abs') === 'off', 
-    ac: formData.get('ac') === 'off', 
-    airbag: formData.get('airbag') === 'off', 
+    // navSystem: formData.get('navSystem') === 'off',
+    // seatHeating: formData.get('seatHeating') === 'off',
+    // cruiseControl: formData.get('cruiseControl') === 'off', 
+    // multiFunSteeringWheel: formData.get('multiFunSteeringWheel') === 'off', 
+    // rainSensor: formData.get('rainSensor') === 'off', 
+    // parkingAssistant: formData.get('parkingAssistant') === 'off', 
+    // eCall: formData.get('eCall') === 'off', 
+    // lightSensor: formData.get('lightSensor') === 'off', 
+    // startStop: formData.get('startStop') === 'off', 
+    // bluetooth: formData.get('bluetooth') === 'off', 
+    // handsFree: formData.get('handsFree') === 'off', 
+    // trafficSignRec: formData.get('trafficSignRec') === 'off', 
+    // esp: formData.get('esp') === 'off', 
+    // abs: formData.get('abs') === 'off', 
+    // ac: formData.get('ac') === 'off', 
+    // airbag: formData.get('airbag') === 'off', 
 
     imageUrl: JSON.parse(formData.get('imageUrl') as string),
-    userId: auth.userId,
+    // userId: formData.get('userId') || null,
 
   });
 
@@ -112,12 +117,11 @@ export async function createCar(prevState: any, formData : FormData) {
     return state;
   }
 
-  try {
-    console.log("Authenticated user ID:", userId);
+
 
     await prisma.car.create({ 
       data: {
-        makeId: validateFields.data.makeId,
+        makeId: parseInt(validateFields.data.make),
         model: validateFields.data.model,
         model_variant: validateFields.data.model_variant,
         year: validateFields.data.year,
@@ -126,52 +130,92 @@ export async function createCar(prevState: any, formData : FormData) {
         fuel: validateFields.data.fuel,
         transmission: validateFields.data.transmission,
         carShape: validateFields.data.carShape,
+        wheelDrive: validateFields.data.wheelDrive,
 
         price: validateFields.data.price,
         smallDescription: validateFields.data.smallDescription,
-        description: validateFields.data.description
-        ? JSON.parse(validateFields.data.description)
-        : undefined,
+        // description: validateFields.data.description
+        // ? JSON.parse(validateFields.data.description)
+        // : undefined,
 
-        navSystem: validateFields.data.navSystem,
-        seatHeating: validateFields.data.seatHeating,
-        cruiseControl: validateFields.data.cruiseControl,
-        multiFunSteeringWheel: validateFields.data.multiFunSteeringWheel,
-        rainSensor: validateFields.data.rainSensor,
-        parkingAssistant: validateFields.data.parkingAssistant,
-        eCall: validateFields.data.eCall,
-        lightSensor: validateFields.data.lightSensor,
-        startStop: validateFields.data.startStop,
-        bluetooth: validateFields.data.bluetooth,
-        handsFree: validateFields.data.handsFree,
-        trafficSignRec: validateFields.data.trafficSignRec,
-        esp: validateFields.data.esp,
-        abs: validateFields.data.abs,
-        ac: validateFields.data.ac,
-        airbag: validateFields.data.airbag,
+        // navSystem: validateFields.data.navSystem,
+        // seatHeating: validateFields.data.seatHeating,
+        // cruiseControl: validateFields.data.cruiseControl,
+        // multiFunSteeringWheel: validateFields.data.multiFunSteeringWheel,
+        // rainSensor: validateFields.data.rainSensor,
+        // parkingAssistant: validateFields.data.parkingAssistant,
+        // eCall: validateFields.data.eCall,
+        // lightSensor: validateFields.data.lightSensor,
+        // startStop: validateFields.data.startStop,
+        // bluetooth: validateFields.data.bluetooth,
+        // handsFree: validateFields.data.handsFree,
+        // trafficSignRec: validateFields.data.trafficSignRec,
+        // esp: validateFields.data.esp,
+        // abs: validateFields.data.abs,
+        // ac: validateFields.data.ac,
+        // airbag: validateFields.data.airbag,
 
         imageUrl: validateFields.data.imageUrl,
-        userId: validateFields.data.userId || null,
+        // userId: validateFields.data.userId || null,
       } 
     });
-    // revalidatePath("/cars"); // Revalidate the cars listing page
 
     const state: State = {
       status: "success",
       message: "Car created successfully",
     };
 
+
+    // revalidatePath("/cars"); // Revalidate the cars listing page
+
+    
+
     return state;
 
-  } catch (error) {
-    console.error("Error creating car:", error);
-    return {
-      status: "error",
-      message: "Failed to create car",
-    };
-  }
+  
 }
 
+
+// export const createCar = async (formData: FormData): Promise<State> => {
+//   try {
+//     const rawCarData = Object.fromEntries(formData.entries());
+
+//     // Convert boolean string values ("true"/"false") to actual booleans
+//     const carData = {
+//       ...rawCarData,
+//       navSystem: rawCarData.navSystem === "true",
+//       seatHeating: rawCarData.seatHeating === "true",
+//       cruiseControl: rawCarData.cruiseControl === "true",
+//       multiFunSteeringWheel: rawCarData.multiFunSteeringWheel === "true",
+//       rainSensor: rawCarData.rainSensor === "true",
+//       parkingAssistant: rawCarData.parkingAssistant === "true",
+//       eCall: rawCarData.eCall === "true",
+//       lightSensor: rawCarData.lightSensor === "true",
+//       startStop: rawCarData.startStop === "true",
+//       bluetooth: rawCarData.bluetooth === "true",
+//       handsFree: rawCarData.handsFree === "true",
+//       trafficSignRec: rawCarData.trafficSignRec === "true",
+//       esp: rawCarData.esp === "true",
+//       abs: rawCarData.abs === "true",
+//       ac: rawCarData.ac === "true",
+//       airbag: rawCarData.airbag === "true",
+//     };
+
+//     // Validate data
+//     const parsedData = carSchema.parse(carData);
+
+//     // Save to database
+//     await prisma.car.create({ data: parsedData });
+
+//     return { status: "success", message: "Car created successfully!" };
+//   } catch (error: any) {
+//     return {
+//       status: "error",
+//       errors: error.errors || {},
+//       message: error.message || "An error occurred",
+//     };
+//   }
+// };
 
 // Update Car Action
 export async function updateCar(

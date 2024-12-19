@@ -22,61 +22,62 @@ model User {
   profileImage       String
   connectedAccountId String @unique
 
-  car Car[]
+  // car Car[]
 }
 
 model Car {
-  id               Int      @id @default(autoincrement())
+  id Int @id @default(autoincrement())
 
-  make             Make?    @relation(fields: [makeId], references: [id])
-  makeId           Int?
+  make             Make    @relation(fields: [makeId], references: [id])
+  makeId           Int
 
-  model            String
-  model_variant    String
-  year             Int
+  model         String
+  model_variant String
+  year          Int
+  mileage       Int
 
-  mileage           Int
-  fuel              Fuel
-  transmission      Transmission
-  carShape          CarShapes
+  fuel         Fuel
+  transmission Transmission
+  carShape     CarShapes
+  wheelDrive   WheelDrive
 
-  price            Decimal  @db.Decimal(10, 2)
-  smallDescription String ?
-  description      Json ?
+  price            Decimal @db.Decimal(10, 2)
+  smallDescription String?
+  // description      Json ?
 
-  navSystem Boolean
-  seatHeating Boolean
-  cruiseControl Boolean
-  multiFunSteeringWheel Boolean
-  rainSensor Boolean
-  parkingAssistant Boolean
-  eCall Boolean
-  lightSensor Boolean
-  startStop Boolean
-  bluetooth Boolean
-  handsFree Boolean
-  trafficSignRec Boolean
-  esp Boolean
-  abs Boolean
-  ac Boolean
-  airbag Boolean
+  // navSystem Boolean
+  // seatHeating Boolean
+  // cruiseControl Boolean
+  // multiFunSteeringWheel Boolean
+  // rainSensor Boolean
+  // parkingAssistant Boolean
+  // eCall Boolean
+  // lightSensor Boolean
+  // startStop Boolean
+  // bluetooth Boolean
+  // handsFree Boolean
+  // trafficSignRec Boolean
+  // esp Boolean
+  // abs Boolean
+  // ac Boolean
+  // airbag Boolean
 
-  imageUrl         String[]
+  imageUrl String[]
 
-  User   User?   @relation(fields: [userId], references: [id])
-  userId String?
+  // User   User?   @relation(fields: [userId], references: [id])
+  // userId String?
 
-  createdAt DateTime @default(now())
+  createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
 }
 
 model Make {
   id      Int     @id @default(autoincrement())
-  title    String
+  title   String
   logoUrl String?
 
   car     Car[]
-  
+
   createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
 }
@@ -111,7 +112,7 @@ enum Transmission {
   Automatic
 }
 
-enum WheelDriver {
+enum WheelDrive {
   front_WD
   back_WD
   All_WD
@@ -123,4 +124,3 @@ enum Fuel {
   Electric
   Hybrid
 }
-

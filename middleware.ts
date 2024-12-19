@@ -21,6 +21,8 @@
 //   return clerkMiddleware()(req, event);
 // }
 
+
+
 // // Middleware configuration
 // export const config = {
 //   matcher: [
@@ -33,38 +35,33 @@
 //   ],
 // };
 
-
-import { NextRequest, NextFetchEvent, NextResponse } from "next/server";
+import { NextRequest, NextFetchEvent } from "next/server";
+import { clerkMiddleware } from "@clerk/nextjs/server";
 import createMiddleware from "next-intl/middleware";
-import { routing } from './i18n/routing';
-import { clerkMiddleware, getAuth } from "@clerk/nextjs/server";
+import { routing } from "./i18n/routing";
 
-// Create next-intl middleware
+// Create the next-intl middleware
 const intlMiddleware = createMiddleware(routing);
 
-export default async function middleware(req: NextRequest, event: NextFetchEvent) {
-  // Handle locale routing
+export default function middleware(req: NextRequest, event: NextFetchEvent) {
+  // Step 1: Handle locale-based routing
   const intlResponse = intlMiddleware(req);
   if (intlResponse) {
-    return intlResponse;
+    return intlResponse; // Exit early if intlMiddleware handles the request
   }
 
-  // Authenticate with Clerk
-  const { userId } = getAuth(req);
-  if (!userId) {
-    return new Response('Unauthorized', { status: 401 });
-  }
-
-  // Proceed with the rest of the logic
+  // Step 2: Authenticate with Clerk
+  // Pass both `req` and `event` explicitly to Clerk
   return clerkMiddleware()(req, event);
 }
 
+// Middleware configuration
 export const config = {
   matcher: [
-    '/',
-    '/(fr|en)/:path*',
-    '/sign-in',
+    '/', // Root path
+    '/(fr|en)/:path*', // Localized paths
+    '/sign-in', // Authentication paths
     '/sign-up',
-    '/api/:path*',
+    '/api/:path*', // API routes
   ],
 };
