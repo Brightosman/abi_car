@@ -56,19 +56,35 @@ export async function AddMake(prevState: any, formData: FormData){
     return state;
 }
 
-export async function GetMake(){
+
+export async function GetMake() {
     const make = await prisma.make.findMany({
         select: {
             id: true,
             title: true,
             logoUrl: true,
-            cars: true,
+            cars: {
+                select: {
+                    id: true,
+                    model: true,
+                    imageUrl: true,
+                },
+            },
         },
-        // take:4,
         orderBy: {
             title: "asc"
         }
-    })
+    });
 
-    return make;
+    // Map over cars to extract the first image
+    const formattedMake = make.map(m => ({
+        ...m,
+        cars: m.cars.map(car => ({
+            ...car,
+            imageUrl: car.imageUrl[0] || '/default-car-image.png'  // Pick first or use default
+        }))
+    }));
+
+    return formattedMake;
 }
+

@@ -31,7 +31,8 @@ export default async function GetMakeForm() {
               title={make.title}
               key={make.id}
               // Add additional props like `cars` if `MakeCard` requires them
-               cars={make.cars.map((car) => car.id)}
+              //  cars={make.cars.map((car) => car.model)}
+              cars={make.cars ?? []}
             />
           ))}
         </div>
