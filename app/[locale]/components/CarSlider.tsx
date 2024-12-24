@@ -229,12 +229,17 @@ import { fadeIn } from './variants';
 
 // Car data interface
 interface ICar {
-  id: number;
-  imageUrl: string[];
+ id: number;
+  model: string;
+  model_variant: string;
+  year: number;
+  mileage: number;
+  fuel: string;
+  transmission: string;
+  carShape: string;
+  price: number | Decimal;
   make: { title: string; logoUrl: string | null };
-  model: string | null;
-  model_variant: string | null;
-  price: number | null;
+  imageUrl: string[];  
   stars?: number; // Optional
 }
 
