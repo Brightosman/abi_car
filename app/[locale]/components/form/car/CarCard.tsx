@@ -4,11 +4,12 @@ import Link from 'next/link';
 
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { Button } from '@/components/ui/button';
+import Decimal from 'decimal.js';
 
 interface IMake{
     id: number
     title: string
-    logoUrl: string
+    logoUrl: string | null
 }
 interface ICar {
     id: number;
@@ -17,7 +18,7 @@ interface ICar {
     model : string | null
     model_variant : string | null
 
-    price: number | null
+    price: number | Decimal | null;
 
     // make: IMake
 }
@@ -61,59 +62,7 @@ export default function CarCard({id, imageUrl, make, model, model_variant, price
             View Details
             </Link>
         </Button>
-
-        {/* <div>
-            {make && make.length > 0 ? (
-                make.map(make => (
-                    <div>
-                        <Image src={make.imageUrl} alt={make.title} width={30} height={30} />
-                        <p className="text-lg">{make.title}</p>
-                    </div>
-                ))
-            ): (
-                <div> No Make Available </div>
-            )}
-        </div> */}
     </div>
   )
 }
 
-
-// import Image from 'next/image';
-// import Link from 'next/link';
-
-// interface CarProps {
-//   id: number;
-//   make: string;
-//   model: string;
-//   model_variant: string;
-//   imageUrl: string;
-// }
-
-// export default function CarCard({ id, make, model, model_variant, imageUrl }: CarProps) {
-//   return (
-//     <div className="bg-white border border-gray-200 rounded-lg shadow-md p-4">
-//       <div className="relative w-full h-48">
-//         <Image
-//           src={imageUrl || '/default-car.png'}
-//           alt={`${make} ${model}`}
-//           layout="fill"
-//           objectFit="cover"
-//           className="rounded-t-lg"
-//         />
-//       </div>
-//       <div className="p-4">
-//         <h3 className="text-lg font-bold">
-//           {make} {model}
-//         </h3>
-//         <p className="text-sm text-gray-500">{model_variant}</p>
-//         <Link
-//           href={`/cars/${id}`}
-//           className="mt-4 inline-block bg-primary text-white px-4 py-2 rounded"
-//         >
-//           View Details
-//         </Link>
-//       </div>
-//     </div>
-//   );
-// }
