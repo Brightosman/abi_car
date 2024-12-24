@@ -45,22 +45,22 @@ model Car {
   smallDescription String?
   // description      Json ?
 
-  // navSystem Boolean
-  // seatHeating Boolean
-  // cruiseControl Boolean
-  // multiFunSteeringWheel Boolean
-  // rainSensor Boolean
-  // parkingAssistant Boolean
-  // eCall Boolean
-  // lightSensor Boolean
-  // startStop Boolean
-  // bluetooth Boolean
-  // handsFree Boolean
-  // trafficSignRec Boolean
-  // esp Boolean
-  // abs Boolean
-  // ac Boolean
-  // airbag Boolean
+  navSystem Boolean
+  seatHeating Boolean
+  cruiseControl Boolean
+  multiFunSteeringWheel Boolean
+  rainSensor Boolean
+  parkingAssistant Boolean
+  eCall Boolean
+  lightSensor Boolean
+  startStop Boolean
+  bluetooth Boolean
+  handsFree Boolean
+  trafficSignRec Boolean
+  esp Boolean
+  abs Boolean
+  ac Boolean
+  airbag Boolean
 
   imageUrl String[]
 

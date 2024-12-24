@@ -16,6 +16,8 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Toggle } from "@/components/ui/toggle"
+
 import { SubmitButton } from "../../SubmitButtons";
 import { UploadDropzone } from "../../../lib/uploadthing";
 import { toast } from "react-toastify";
@@ -158,7 +160,7 @@ export default function CreateCarForm() {
           </div> */}
 
           {/* Features */}
-          {/* <div>
+          <div>
             <Label>Car Features</Label>
             {[
               "navSystem", "seatHeating", "cruiseControl", "multiFunSteeringWheel",
@@ -173,7 +175,7 @@ export default function CreateCarForm() {
                 </Label>
               </div>
             ))}
-          </div> */}
+          </div>
 
           {/* Image Upload */}
           <div>

@@ -57,7 +57,7 @@ export default function AddMakeForm() {
                     Logo
                 </label>
                 <UploadDropzone
-                    endpoint="imageUploader"
+                    endpoint="logoUploader"
                     onClientUploadComplete={(res) =>{ setLogoUrl(res[0].url); toast.success("Your images have been uploaded")}} 
                     onUploadError={(error: Error) => { toast.error("Something went wrong, try again")}} 
                 />

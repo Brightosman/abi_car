@@ -40,22 +40,24 @@ const carSchema = z.object({
   price: z.number().min(0, { message: "Price must be a positive number" }),
   smallDescription: z.string().min(1, { message: "Small description is required" }),
   // description: z.string({}).optional(),
-  // navSystem: z.boolean(),
-  // seatHeating: z.boolean(),
-  // cruiseControl: z.boolean(),
-  // multiFunSteeringWheel: z.boolean(),
-  // rainSensor: z.boolean(),
-  // parkingAssistant: z.boolean(),
-  // eCall: z.boolean(),
-  // lightSensor: z.boolean(),
-  // startStop: z.boolean(),
-  // bluetooth: z.boolean(),
-  // handsFree: z.boolean(),
-  // trafficSignRec: z.boolean(),
-  // esp: z.boolean(),
-  // abs: z.boolean(),
-  // ac: z.boolean(),
-  // airbag: z.boolean(),
+  
+  navSystem: z.boolean(),
+  seatHeating: z.boolean(),
+  cruiseControl: z.boolean(),
+  multiFunSteeringWheel: z.boolean(),
+  rainSensor: z.boolean(),
+  parkingAssistant: z.boolean(),
+  eCall: z.boolean(),
+  lightSensor: z.boolean(),
+  startStop: z.boolean(),
+  bluetooth: z.boolean(),
+  handsFree: z.boolean(),
+  trafficSignRec: z.boolean(),
+  esp: z.boolean(),
+  abs: z.boolean(),
+  ac: z.boolean(),
+  airbag: z.boolean(),
+
   imageUrl: z.array(z.string().url({ message: "Invalid URL in imageUrl" })),
   // userId: z.string().optional(),
 });
@@ -85,22 +87,22 @@ export async function createCar(prevState: any, formData : FormData) {
     smallDescription: formData.get('smallDescription'),
     // description: formData.get('description') as string,
 
-    // navSystem: formData.get('navSystem') === 'off',
-    // seatHeating: formData.get('seatHeating') === 'off',
-    // cruiseControl: formData.get('cruiseControl') === 'off', 
-    // multiFunSteeringWheel: formData.get('multiFunSteeringWheel') === 'off', 
-    // rainSensor: formData.get('rainSensor') === 'off', 
-    // parkingAssistant: formData.get('parkingAssistant') === 'off', 
-    // eCall: formData.get('eCall') === 'off', 
-    // lightSensor: formData.get('lightSensor') === 'off', 
-    // startStop: formData.get('startStop') === 'off', 
-    // bluetooth: formData.get('bluetooth') === 'off', 
-    // handsFree: formData.get('handsFree') === 'off', 
-    // trafficSignRec: formData.get('trafficSignRec') === 'off', 
-    // esp: formData.get('esp') === 'off', 
-    // abs: formData.get('abs') === 'off', 
-    // ac: formData.get('ac') === 'off', 
-    // airbag: formData.get('airbag') === 'off', 
+    navSystem: formData.get('navSystem') === 'true',
+    seatHeating: formData.get('seatHeating') === 'true',
+    cruiseControl: formData.get('cruiseControl') === 'true', 
+    multiFunSteeringWheel: formData.get('multiFunSteeringWheel') === 'true', 
+    rainSensor: formData.get('rainSensor') === 'true', 
+    parkingAssistant: formData.get('parkingAssistant') === 'true', 
+    eCall: formData.get('eCall') === 'true', 
+    lightSensor: formData.get('lightSensor') === 'true', 
+    startStop: formData.get('startStop') === 'true', 
+    bluetooth: formData.get('bluetooth') === 'true', 
+    handsFree: formData.get('handsFree') === 'true', 
+    trafficSignRec: formData.get('trafficSignRec') === 'true', 
+    esp: formData.get('esp') === 'true', 
+    abs: formData.get('abs') === 'true', 
+    ac: formData.get('ac') === 'true', 
+    airbag: formData.get('airbag') === 'true', 
 
     imageUrl: JSON.parse(formData.get('imageUrl') as string),
     // userId: formData.get('userId') || null,
@@ -138,22 +140,22 @@ export async function createCar(prevState: any, formData : FormData) {
         // ? JSON.parse(validateFields.data.description)
         // : undefined,
 
-        // navSystem: validateFields.data.navSystem,
-        // seatHeating: validateFields.data.seatHeating,
-        // cruiseControl: validateFields.data.cruiseControl,
-        // multiFunSteeringWheel: validateFields.data.multiFunSteeringWheel,
-        // rainSensor: validateFields.data.rainSensor,
-        // parkingAssistant: validateFields.data.parkingAssistant,
-        // eCall: validateFields.data.eCall,
-        // lightSensor: validateFields.data.lightSensor,
-        // startStop: validateFields.data.startStop,
-        // bluetooth: validateFields.data.bluetooth,
-        // handsFree: validateFields.data.handsFree,
-        // trafficSignRec: validateFields.data.trafficSignRec,
-        // esp: validateFields.data.esp,
-        // abs: validateFields.data.abs,
-        // ac: validateFields.data.ac,
-        // airbag: validateFields.data.airbag,
+        navSystem: validateFields.data.navSystem,
+        seatHeating: validateFields.data.seatHeating,
+        cruiseControl: validateFields.data.cruiseControl,
+        multiFunSteeringWheel: validateFields.data.multiFunSteeringWheel,
+        rainSensor: validateFields.data.rainSensor,
+        parkingAssistant: validateFields.data.parkingAssistant,
+        eCall: validateFields.data.eCall,
+        lightSensor: validateFields.data.lightSensor,
+        startStop: validateFields.data.startStop,
+        bluetooth: validateFields.data.bluetooth,
+        handsFree: validateFields.data.handsFree,
+        trafficSignRec: validateFields.data.trafficSignRec,
+        esp: validateFields.data.esp,
+        abs: validateFields.data.abs,
+        ac: validateFields.data.ac,
+        airbag: validateFields.data.airbag,
 
         imageUrl: validateFields.data.imageUrl,
         // userId: validateFields.data.userId || null,
@@ -175,6 +177,90 @@ export async function createCar(prevState: any, formData : FormData) {
   
 }
 
+export async function GetCars() {
+  const cars = await prisma.car.findMany({
+    select:{
+      id: true,
+      imageUrl: true,
+      make: true,
+      model: true,
+      model_variant: true,
+      year: true,
+      mileage: true,
+
+      fuel: true,
+      transmission: true,
+      carShape : true,
+      wheelDrive: true,
+      price: true,
+      smallDescription: true,
+      navSystem: true,
+      seatHeating: true,
+      cruiseControl: true,
+      multiFunSteeringWheel: true,
+      rainSensor: true,
+      parkingAssistant : true,
+      eCall: true,
+      lightSensor: true,
+      startStop: true,
+      bluetooth: true,
+      handsFree : true,
+      trafficSignRec: true,
+      esp: true,
+      abs : true,
+      ac : true,
+      airbag : true,
+
+    },
+    orderBy: {
+      createdAt: "asc",
+    }
+  })
+  return cars;
+}
+
+
+export async function GetCar(id: string | number) {
+  const car = await prisma.car.findUnique({
+    where : {id: Number(id)},
+    select: {
+      make: {select: {logoUrl: true, title: true}},
+      model: true,
+      model_variant: true,
+      year: true,
+      mileage: true,
+
+      fuel: true,
+      transmission: true,
+      carShape: true,
+      wheelDrive: true,
+
+      price: true,
+      smallDescription: true,
+
+      navSystem: true,
+      seatHeating: true,
+      cruiseControl: true,
+      multiFunSteeringWheel: true,
+      rainSensor: true,
+      parkingAssistant: true,
+      eCall : true,
+      lightSensor: true,
+      startStop: true,
+      bluetooth: true,
+      handsFree: true,
+      trafficSignRec: true,
+      esp: true,
+      abs: true,
+      ac: true,
+      airbag: true,
+
+      imageUrl : true,
+
+    }
+  })
+  return car
+}
 
 // // Update Car Action
 // export async function updateCar(
