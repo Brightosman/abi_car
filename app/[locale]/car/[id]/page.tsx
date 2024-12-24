@@ -5,6 +5,7 @@ import { GetCar } from '../../(actions)/car/car'
 
 export default async function page({params,}: {params:{id: number}}) {
     const car = await GetCar(params.id)
+    console.log(car);
     return (
         <section className="max-w-7xl mx-auto px-4 lg:px-8 lg:grid lg:grid-rows-1 lg:grid-cols-7 lg:gap-x-8 lg:gap-y-10 xl:gap-x-16">
             <Carousel className='lg:row-end-1 lg:col-span-4'>
@@ -26,6 +27,18 @@ export default async function page({params,}: {params:{id: number}}) {
                     {car?.model}
                 </h1>
             </div>
+
+            <div className="max-w-2xl mx-auto mt-5 lg:max-w-none lg:mt-0 lg:row-end-2 lg:row-span-2 lg:col-span-3">
+                <h1 className="text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl">
+                    {car?.model_variant}
+                </h1>
+            </div>
+            <div className="max-w-2xl mx-auto mt-5 lg:max-w-none lg:mt-0 lg:row-end-2 lg:row-span-2 lg:col-span-3">
+                <h1 className="text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl">
+                    {car?.year}
+                </h1>
+            </div>
+            <h1>I just need evidence that you are loading </h1>
         </section>
     )
 }

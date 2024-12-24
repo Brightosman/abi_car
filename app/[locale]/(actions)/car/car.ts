@@ -4,6 +4,7 @@ import { prisma } from "../../lib/db";
 import { type CarShapes, Transmission, Fuel  } from "@prisma/client"
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation"
+import { Decimal } from 'decimal.js';
 
 // import type { NextApiRequest, NextApiResponse } from 'next'
 // import { getAuth } from '@clerk/nextjs/server'
@@ -216,7 +217,10 @@ export async function GetCars() {
       createdAt: "asc",
     }
   })
-  return cars;
+  return cars.map((car) => ({
+    ...car,
+    price: car.price instanceof Decimal ? car.price.toNumber() : car.price,
+  }));
 }
 
 

@@ -4,7 +4,13 @@ import Link from 'next/link';
 
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { Button } from '@/components/ui/button';
+
+import { GetCars } from '@/app/[locale]/(actions)/car/car'
 import Decimal from 'decimal.js';
+
+import { motion } from 'framer-motion';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { fadeIn } from '../../variants';
 
 interface IMake{
     id: number
@@ -22,6 +28,7 @@ interface ICar {
 
     // make: IMake
 }
+
 
 export default function CarCard({id, imageUrl, make, model, model_variant, price}:ICar) {
     const displayPrice = price ? price.toFixed(2) : 'N/A';
@@ -63,6 +70,28 @@ export default function CarCard({id, imageUrl, make, model, model_variant, price
             </Link>
         </Button>
     </div>
+    
+    // <motion.div
+    //   variants={fadeIn('up', 0.4)}
+    //   initial='hidden'
+    //   whileInView={'show'}
+    //   viewport={{ once: false, amount: 0.2 }}
+    //   className='container mx-auto'
+    //   >
+    //   <Swiper
+    //     breakpoints={{
+    //       320: { slidesPerView: 1, spaceBetween: 15 },
+    //       640: { slidesPerView: 2, spaceBetween: 32 },
+    //       1260: { slidesPerView: 3, spaceBetween: 32 },
+    //     }}
+    //   >
+    //     <div>
+    //   <SwiperSlide key={index}>
+      
+    //   </SwiperSlide>
+    // </div>
+    //   </Swiper>
+    // </motion.div>
   )
 }
 
