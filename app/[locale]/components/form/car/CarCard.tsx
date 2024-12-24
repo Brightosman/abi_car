@@ -51,7 +51,7 @@ export default function CarCard({id, imageUrl, make, model, model_variant, price
         
         <div>
             <div>{make.title}</div>
-            <Image src={make.logoUrl} alt={make.title} width={30} height={30} />
+            <Image src={make.logoUrl as string} alt={make.title} width={30} height={30} />
         </div>
 
         <Button asChild className="w-full mt-5 bg-accent ">
