@@ -227,6 +227,9 @@ import { motion } from 'framer-motion';
 // Variants
 import { fadeIn } from './variants';
 
+import { Decimal } from 'decimal.js'; // Import Decimal if you're using decimal.js
+
+
 // Car data interface
 interface ICar {
  id: number;
