@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl';
 export default function PromotionBar() {
   const t = useTranslations('promotionBar');
   return (
-    <div className="fixed inset-x-0 top-0 z-50 bg-teal-600">
+    <div className="fixed inset-x-0 top-0 z-50 bg-accent">
       <div className="mx-auto max-w-7xl py-3 px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col items-center justify-between lg:flex-row lg:justify-center">
           <div className="flex items-center text-center lg:mr-3">
