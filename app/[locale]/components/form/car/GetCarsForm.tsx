@@ -7,7 +7,7 @@ export default async function GetCarsForm() {
     const data = await GetCars()
     console.log(data);
   return (
-    <section className="mt-12">
+    <section  className="bg-gray-100 p-8 rounded-lg shadow-lg max-w-4xl mx-auto">
         <div className="md:flex md:items-center md:justify-between">
             <h2 className="text-2xl font-extrabold tracking-tighter">
                 Newest  Cars
